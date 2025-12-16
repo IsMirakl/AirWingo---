@@ -1,0 +1,46 @@
+header {
+   height: 80px;
+}
+
+.container {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   width: 100%;
+}
+
+.headerLogo a {
+   padding-left: 2.5rem;
+   color: white;
+   font-weight: 600;
+   font-size: 1.8rem;
+}
+
+ul {
+   padding-left: 2rem;
+   padding: 2rem;
+   display: flex;
+   gap: 3rem;
+   display: flex;
+   align-items: center;
+}
+
+.navList a {
+   color: white;
+   font-weight: 600;
+   font-size: 1rem;
+}
+
+.currencySelect {
+   padding: 8px 12px;
+   border-radius: 6px;
+   background-color: white;
+   font-size: 14px;
+   cursor: pointer;
+   outline: none;
+}
+
+.currencySelect:focus {
+   border-color: #007bff;
+   box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
