@@ -1,11 +1,11 @@
-.test {
-    height: 650px;
-    background-color: #0f4d8a;
+.searchFlightsSection {
+   height: 650px;
+   background-color: #0f4d8a;
 }
 
-.test > h1{
-    padding: 10rem 7rem 0rem 3rem;
-    font-size: 2.5rem;
-    color: white;
-    font-weight: 600;
+.searchFlightsSection > h1 {
+   padding: 10rem 7rem 0rem 3rem;
+   font-size: 2.5rem;
+   color: white;
+   font-weight: 600;
 }

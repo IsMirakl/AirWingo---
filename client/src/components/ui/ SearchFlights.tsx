@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { FormField } from './forms/FormField';
 
-import componentStyles from '../../styles/components/FormFieldComponent.module.css';
+import componentStyles from '../ui/forms/FormFieldComponent.module.css';
+import CityDropdown from './dropdown/DropdownCIty';
 
 const citiesData = [
    { id: 1, name: 'Москва' },
@@ -19,8 +20,6 @@ interface City {
 const SearchFlights = () => {
    const [mainCity, setMainCity] = useState('');
    const [endCity, setEndCity] = useState('');
-   const [selectedMainCity, setSelectedMainCity] = useState<City | null>(null);
-   const [selectedEndCity, setSelectedEndCity] = useState<City | null>(null);
 
    const handleMainCityInputChange = (
       e: React.ChangeEvent<HTMLInputElement>
@@ -76,16 +75,14 @@ const SearchFlights = () => {
    const handleCitySelected = (city: City, formField: 'start' | 'end') => {
       if (formField === 'start') {
          setMainCity(city.name);
-         setSelectedMainCity(city);
       } else {
          setEndCity(city.name);
-         setSelectedEndCity(city);
       }
    };
    return (
       <>
          <h1>Дешевые билеты на самолеты !</h1>
-         <form action="">
+         <form action="" className={componentStyles.formContainer}>
             <FormField
                type="text"
                placeholder="Откуда"
@@ -95,19 +92,11 @@ const SearchFlights = () => {
                className={componentStyles.mainCityField}
             />
             {shouldMainCitiesShowDropdown && (
-               <ul className={componentStyles.dropdownList}>
-                  {filteredMainCities.map(city => (
-                     <li
-                        key={city.id}
-                        onClick={() => handleCitySelected(city, 'start')}
-                     >
-                        {city.name}
-                     </li>
-                  ))}
-               </ul>
-            )}
-            {selectedMainCity && (
-               <p>Выбранный город: {selectedMainCity.name}</p>
+               <CityDropdown
+                  cities={filteredMainCities}
+                  className={componentStyles.mainCityDropdown}
+                  onCitySelect={city => handleCitySelected(city, 'start')}
+               />
             )}
 
             <FormField
@@ -120,18 +109,12 @@ const SearchFlights = () => {
             />
 
             {shouldEndCitiesShowDropdown && (
-               <ul className={componentStyles.dropdownList}>
-                  {filteredEndCities.map(city => (
-                     <li
-                        key={city.id}
-                        onClick={() => handleCitySelected(city, 'end')}
-                     >
-                        {city.name}
-                     </li>
-                  ))}
-               </ul>
+               <CityDropdown
+                  cities={filteredEndCities}
+                  className={componentStyles.endCityDropdown}
+                  onCitySelect={city => handleCitySelected(city, 'end')}
+               />
             )}
-            {selectedEndCity && <p>Выбранный город: {selectedEndCity.name}</p>}
          </form>
       </>
    );
