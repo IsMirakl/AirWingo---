@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
+
 import styles from '../styles/components/Header.module.css';
+import AuthModal from './modals/AuthModal';
 
 const ROUTES = {
    HOME: '/',
-   PROFILE: '/profile',
    FAQ: '/faq',
 } as const;
 
@@ -13,10 +14,7 @@ interface NavItem {
    label: string;
 }
 
-const NAV_ITEMS: NavItem[] = [
-   { to: ROUTES.PROFILE, label: 'Профиль' },
-   { to: ROUTES.FAQ, label: 'Поддержка' },
-];
+const NAV_ITEMS: NavItem[] = [{ to: ROUTES.FAQ, label: 'Поддержка' }];
 
 const Header = () => {
    const [currency, setCurrency] = useState('RUB');
@@ -29,11 +27,13 @@ const Header = () => {
             </div>
             <nav>
                <ul className={styles.navList}>
+                  <AuthModal />
                   {NAV_ITEMS.map(item => (
                      <li key={item.label}>
                         <NavLink to={item.to}>{item.label}</NavLink>
                      </li>
                   ))}
+
                   <select
                      value={currency}
                      onChange={e => setCurrency(e.target.value)}
