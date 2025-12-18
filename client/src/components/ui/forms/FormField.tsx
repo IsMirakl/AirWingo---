@@ -1,4 +1,4 @@
-interface SearchFormFieldProps {
+interface FormFieldProps {
    type: string;
    name?: string;
    placeholder: string;
@@ -9,7 +9,7 @@ interface SearchFormFieldProps {
    onFocus?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const SearchFormField = ({
+export const FormField = ({
    type,
    name,
    placeholder,
@@ -18,7 +18,7 @@ export const SearchFormField = ({
    required = false,
    className = '',
    onFocus,
-}: SearchFormFieldProps) => {
+}: FormFieldProps) => {
    return (
       <input
          type={type}
