@@ -5,6 +5,7 @@ const PORT = process.env.PORT || 3000;
 
 
 const airportRoutes = require('./routes/airport.routes');
+const flightRoutes = require('./routes/flight.routes');
 
 app.use(express.json());
 
@@ -13,6 +14,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/v1/airports', airportRoutes);
+app.use('/api/v1/flights', flightRoutes);
 
 // processing errors
 app.use((err, req, res, next) => {
