@@ -1,6 +1,10 @@
 const flightService = require('../services/flight.service');
+const { query, validationResult } = require('express-validator');
+
+
 
 async function searchFlights(req, res) {
+    
   const { origin, destination, date } = req.query;
 
   if (!origin || !destination || !date) {

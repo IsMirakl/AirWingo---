@@ -24,9 +24,14 @@ app.use((err, req, res, next) => {
 
 // global processing errors for express
 app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({message: 'Something went wrong!'});
-}); 
+    const statusCode = err.statusCode || 500;
+    const message = err.isOperational ? err.message : 'Internal Server Error';
+
+    res.status(statusCode).json({
+        status: 'error',
+        message: message,
+    });
+});
 
 app.listen(PORT, () => {
     console.log(`Server start ${PORT}`);
