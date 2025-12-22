@@ -7,6 +7,7 @@ interface FormFieldProps {
    required?: boolean;
    className?: string;
    onFocus?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+   hasError?: boolean;
 }
 
 export const FormField = ({
@@ -18,6 +19,7 @@ export const FormField = ({
    required = false,
    className = '',
    onFocus,
+   hasError = false,
 }: FormFieldProps) => {
    return (
       <input
@@ -29,6 +31,7 @@ export const FormField = ({
          required={required}
          className={className}
          onFocus={onFocus}
+         hasError={hasError}
       />
    );
 };
