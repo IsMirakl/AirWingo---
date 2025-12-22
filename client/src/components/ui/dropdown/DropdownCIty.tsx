@@ -20,11 +20,7 @@ const CityDropdown = ({
    return (
       <ul className={className}>
          {cities.map(city => (
-            <li
-               key={city.id}
-               onClick={() => onCitySelect(city)}
-               className="city-dropdown-item"
-            >
+            <li key={city.id} onClick={() => onCitySelect(city)}>
                {city.name}
             </li>
          ))}

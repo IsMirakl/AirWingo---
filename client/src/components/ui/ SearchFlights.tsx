@@ -21,6 +21,9 @@ const SearchFlights = () => {
    const [mainCity, setMainCity] = useState('');
    const [endCity, setEndCity] = useState('');
 
+   const [dateDeparture, setDateDeparture] = useState('');
+   const [dateArrival, setDateArrival] = useState('');
+
    const handleMainCityInputChange = (
       e: React.ChangeEvent<HTMLInputElement>
    ) => {
@@ -115,6 +118,26 @@ const SearchFlights = () => {
                   onCitySelect={city => handleCitySelected(city, 'end')}
                />
             )}
+
+            <FormField
+               type="date"
+               placeholder="Дата вылета"
+               value={dateDeparture}
+               onChange={e => setDateDeparture(e.target.value)}
+               required
+               className={componentStyles.endCityField}
+            />
+
+            <FormField
+               type="date"
+               placeholder="Дата обратно"
+               value={dateArrival}
+               onChange={e => setDateArrival(e.target.value)}
+               required
+               className={componentStyles.endCityField}
+            />
+
+            <button className={componentStyles.buttonSearch}>Найти</button>
          </form>
       </>
    );

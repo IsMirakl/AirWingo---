@@ -7,7 +7,7 @@
    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
-.modalContent{
+.modalContent {
    padding: 0;
 }
 
@@ -26,12 +26,6 @@ hr {
 }
 
 .formAuth {
-   /* display: flex;
-   align-items: stretch;
-   width: 100%;
-   flex-direction: column;
-   gap: 10px; */
-
    display: flex;
    flex-direction: column;
    gap: 0.75rem;

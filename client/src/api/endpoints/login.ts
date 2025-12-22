@@ -1,20 +1,20 @@
 import type {
    AuthResponse,
    LoginData,
-   Profile,
    RegisterData,
+   User,
 } from '../../types/dto/user';
 import { api } from '../axiosConfig';
 
 export const authAPI = {
    login: async (data: LoginData): Promise<AuthResponse> => {
-      const response = await api.post('/v1/auth/login', data);
-      localStorage.setItem('accessToken', response.data.accessTokend);
+      const response = await api.post('/api/v1/auth/login', data);
+      localStorage.setItem('accessToken', response.data.accessToken);
       return response.data;
    },
 
    register: async (data: RegisterData): Promise<AuthResponse> => {
-      const response = await api.post('/v1/auth/register', data);
+      const response = await api.post('/api/v1/auth/register', data);
       localStorage.setItem('accessToken', response.data.accessToken);
       return response.data;
    },
@@ -25,8 +25,8 @@ export const authAPI = {
    //       return response.data;
    //    },
 
-   getProfile: async (): Promise<Profile> => {
-      const response = await api.get('/v1/auth/profile');
+   getProfile: async (): Promise<User> => {
+      const response = await api.get('/api/v1/auth/profile');
       return response.data;
    },
 };

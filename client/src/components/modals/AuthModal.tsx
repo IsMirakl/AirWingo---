@@ -1,6 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from 'react';
 import Modal from 'react-modal';
+import { useNavigate } from 'react-router-dom';
 import { FormField } from '../ui/forms/FormField';
+
+import { useAuth } from '../../hooks/useAuth';
 
 import componentStyles from '../modals/AuthModal.module.css';
 
@@ -31,10 +35,10 @@ function AppModal() {
    const [modalIsOpen, setModalIsOpen] = useState(false);
    const [isLoginModal, setIsLoginModal] = useState(true);
 
-   const [email, setEmail] = useState('');
-   const [password, setPassword] = useState('');
+   const { login, register, isLoading } = useAuth();
+   const navigate = useNavigate();
 
-   const [registerData, setRegisterData] = useState({
+   const [formData, setFormData] = useState({
       email: '',
       password: '',
       confirmPassword: '',
@@ -53,31 +57,27 @@ function AppModal() {
 
    const switchToRegister = () => {
       setIsLoginModal(false);
-
-      if (email) {
-         setRegisterData(prev => ({ ...prev, email }));
-      }
    };
 
-   const handleRegisterChange = (field: string, value: string) => {
-      setRegisterData(prev => ({ ...prev, [field]: value }));
+   const handleInputChange = (field: string, value: string) => {
+      setFormData(prev => ({ ...prev, [field]: value }));
    };
 
    const switchToLogin = () => {
       setIsLoginModal(true);
 
-      setRegisterData(prev => ({
+      setFormData(prev => ({
          ...prev,
-         password: '',
          confirmPassword: '',
          firstName: '',
          lastName: '',
+         middleName: '',
          birthday: '',
       }));
    };
 
    const resetForm = () => {
-      setRegisterData({
+      setFormData({
          email: '',
          password: '',
          confirmPassword: '',
@@ -88,29 +88,36 @@ function AppModal() {
       });
    };
 
-   const handleEmailInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setEmail(e.target.value);
-   };
-
-   const handlePasswordInputChange = (
-      e: React.ChangeEvent<HTMLInputElement>
-   ) => {
-      setPassword(e.target.value);
-   };
-
-   const handleSubmit = (e: React.FormEvent) => {
+   const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
-      if (isLoginModal) {
-         // login
-      } else {
-         // register
-         if (password !== registerData.confirmPassword) {
-            // return password no confirm
+
+      if (!isLoginModal) {
+         if (formData.password !== formData.confirmPassword) {
+            console.error('Пароли не совпадают');
+
             return;
          }
       }
 
-      closeModal();
+      try {
+         let success = false;
+         if (isLoginModal) {
+            success = await login({
+               email: formData.email,
+               password: formData.password,
+            });
+         } else {
+            const { confirmPassword, ...registerData } = formData;
+            success = await register(registerData);
+         }
+
+         if (success) {
+            closeModal();
+            navigate('/profile');
+         }
+      } catch (error) {
+         console.error('Ошибка авторизации:', error);
+      }
    };
 
    return (
@@ -137,16 +144,20 @@ function AppModal() {
                      <FormField
                         type="email"
                         placeholder="Электронная почта"
-                        value={email}
-                        onChange={handleEmailInputChange}
+                        value={formData.email}
+                        onChange={e =>
+                           handleInputChange('email', e.target.value)
+                        }
                         required
                         className={componentStyles.emailField}
                      />
                      <FormField
                         type="password"
                         placeholder="Пароль"
-                        value={password}
-                        onChange={handlePasswordInputChange}
+                        value={formData.password}
+                        onChange={e =>
+                           handleInputChange('password', e.target.value)
+                        }
                         required
                         className={componentStyles.passwordField}
                      />
@@ -156,9 +167,9 @@ function AppModal() {
                               <FormField
                                  type="text"
                                  placeholder="Имя"
-                                 value={registerData.firstName}
+                                 value={formData.firstName}
                                  onChange={e =>
-                                    handleRegisterChange(
+                                    handleInputChange(
                                        'firstName',
                                        e.target.value
                                     )
@@ -169,9 +180,9 @@ function AppModal() {
                               <FormField
                                  type="text"
                                  placeholder="Фамилия"
-                                 value={registerData.lastName}
+                                 value={formData.lastName}
                                  onChange={e =>
-                                    handleRegisterChange(
+                                    handleInputChange(
                                        'lastName',
                                        e.target.value
                                     )
@@ -182,9 +193,9 @@ function AppModal() {
                               <FormField
                                  type="text"
                                  placeholder="Отчество"
-                                 value={registerData.middleName}
+                                 value={formData.middleName}
                                  onChange={e =>
-                                    handleRegisterChange(
+                                    handleInputChange(
                                        'middleName',
                                        e.target.value
                                     )
@@ -196,12 +207,9 @@ function AppModal() {
                            <FormField
                               type="date"
                               placeholder="Дата рождения"
-                              value={registerData.birthday}
+                              value={formData.birthday}
                               onChange={e =>
-                                 handleRegisterChange(
-                                    'birthday',
-                                    e.target.value
-                                 )
+                                 handleInputChange('birthday', e.target.value)
                               }
                               required
                               className={componentStyles.passwordField}
@@ -210,9 +218,9 @@ function AppModal() {
                            <FormField
                               type="password"
                               placeholder="Подтвердите пароль"
-                              value={registerData.confirmPassword}
+                              value={formData.confirmPassword}
                               onChange={e =>
-                                 handleRegisterChange(
+                                 handleInputChange(
                                     'confirmPassword',
                                     e.target.value
                                  )
@@ -226,6 +234,7 @@ function AppModal() {
                      <button
                         type="submit"
                         className={componentStyles.buttonAuth}
+                        disabled={isLoading}
                      >
                         {isLoginModal ? 'Войти' : 'Зарегистрироваться'}
                      </button>
@@ -253,5 +262,4 @@ function AppModal() {
       </div>
    );
 }
-
 export default AppModal;
