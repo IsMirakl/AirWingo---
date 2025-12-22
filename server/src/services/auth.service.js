@@ -19,7 +19,7 @@ class AuthService {
       profile: userData.profile,
     });
 
-    const token = AuthUtils.generatedJwtToken({
+    const token = AuthUtils.generateJwtToken({
       userId: newUser.id,
       email: newUser.email,
       role: newUser.role,
@@ -48,7 +48,7 @@ class AuthService {
       throw new ApiError(401, 'Invalid email or password');
     }
 
-    const token = AuthUtils.generatedJwtToken({
+    const token = AuthUtils.generateJwtToken({
       userId: user.id,
       email: user.email,
       role: user.role,
